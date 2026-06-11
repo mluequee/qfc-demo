@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quality Flow Control — Never Lose a Lead Again</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Georgia, sans-serif;
+    background: #f9f7f4;
+    color: #1a1a1a;
+    line-height: 1.75;
+    font-size: 18px;
+  }
+
+  .container {
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  .hero {
+    background: #1c2b1c;
+    padding: 64px 0 56px;
+  }
+
+  .hero-label {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #e8a020;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 6vw, 44px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 em {
+    color: #e8a020;
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: #b5c4b5;
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  .section {
+    padding: 60px 0;
+    border-bottom: 1px solid #e5e0d8;
+    background: #f9f7f4;
+  }
+
+  .section.alt {
+    background: #ffffff;
+  }
+
+  .section-label {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #e8a020;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .section h2 {
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 24px;
+    line-height: 1.3;
+  }
+
+  .section p {
+    color: #3d3d3d;
+    margin-bottom: 18px;
+    font-size: 17px;
+  }
+
+  .section p:last-child { margin-bottom: 0; }
+
+  .story-box {
+    background: #ffffff;
+    border-left: 4px solid #e8a020;
+    border-radius: 0 12px 12px 0;
+    padding: 28px 24px;
+    margin: 28px 0;
+    font-size: 17px;
+    color: #2d2d2d;
+    line-height: 1.8;
+  }
+
+  .story-box p { margin-bottom: 14px; color: #2d2d2d; font-size: 17px; }
+  .story-box p:last-child { margin-bottom: 0; }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 32px 0;
+  }
+
+  .stat-card {
+    background: #ffffff;
+    border: 1px solid #e5e0d8;
+    border-top: 3px solid #e8a020;
+    border-radius: 10px;
+    padding: 22px 18px;
+  }
+
+  .stat-number {
+    font-size: 34px;
+    font-weight: 700;
+    color: #1c2b1c;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 15px;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .stat-source {
+    font-size: 11px;
+    color: #999;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .fact-inline {
+    background: #f0f7f0;
+    border: 1px solid #c8dfc8;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 20px 0;
+    font-size: 16px;
+    color: #1c3a1c;
+    line-height: 1.6;
+  }
+
+  .fact-inline strong { color: #1c2b1c; }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    background: #ffffff;
+    border: 1px solid #e5e0d8;
+    border-radius: 12px;
+    padding: 22px 20px;
+  }
+
+  .step-num {
+    background: #1c2b1c;
+    color: #e8a020;
+    font-weight: 700;
+    font-size: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-text {
+    color: #2d2d2d;
+    font-size: 17px;
+    line-height: 1.7;
+    padding-top: 5px;
+  }
+
+  .phone-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .phone-mock {
+    background: #ffffff;
+    border: 1px solid #e5e0d8;
+    border-radius: 14px;
+    padding: 20px 16px;
+  }
+
+  .phone-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+
+  .sms-bubble {
+    background: #f0f0f0;
+    border-radius: 14px 14px 14px 4px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #1a1a1a;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .sms-bubble.owner {
+    background: #1c2b1c;
+    border-radius: 14px 14px 4px 14px;
+    color: #c8e6c8;
+  }
+
+  .sms-time {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 6px;
+  }
+
+  .dashboard-mock {
+    background: #ffffff;
+    border: 1px solid #e5e0d8;
+    border-radius: 14px;
+    padding: 22px;
+    margin: 28px 0;
+  }
+
+  .dash-header {
+    font-size: 13px;
+    font-weight: 700;
+    color: #666;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e0d8;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .dash-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 0;
+    border-bottom: 1px solid #f0ede8;
+    font-size: 15px;
+  }
+
+  .dash-row:last-child { border-bottom: none; }
+  .dash-name { color: #1a1a1a; font-weight: 600; }
+  .dash-detail { color: #888; font-size: 13px; margin-top: 2px; }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 11px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .badge-green { background: #e6f4e6; color: #1a5c1a; }
+  .badge-yellow { background: #fef3cd; color: #7a5000; }
+
+  .checklist {
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 17px;
+    color: #2d2d2d;
+  }
+
+  .check-icon {
+    width: 26px;
+    height: 26px;
+    background: #1c2b1c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+    color: #e8a020;
+    font-weight: 700;
+  }
+
+  .process-card {
+    background: #ffffff;
+    border: 1px solid #e5e0d8;
+    border-radius: 14px;
+    padding: 30px 24px;
+    margin: 24px 0;
+  }
+
+  .process-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 18px;
+  }
+
+  .process-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .process-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    font-size: 16px;
+    color: #2d2d2d;
+    line-height: 1.6;
+  }
+
+  .process-icon {
+    width: 28px;
+    height: 28px;
+    background: #f0f7f0;
+    border: 2px solid #c8dfc8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 13px;
+    color: #1c2b1c;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  .support-box {
+    background: #fef9ee;
+    border: 1px solid #f0d080;
+    border-radius: 12px;
+    padding: 22px 20px;
+    margin-top: 24px;
+    font-size: 16px;
+    color: #4a3500;
+    line-height: 1.7;
+  }
+
+  .support-box strong { color: #2a1f00; }
+
+  .close-section {
+    padding: 64px 0 80px;
+    background: #1c2b1c;
+    text-align: center;
+  }
+
+  .close-section h2 {
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 18px;
+    line-height: 1.3;
+  }
+
+  .close-section .reply-text {
+    font-size: 18px;
+    color: #b5c4b5;
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+
+  .close-section .no-pressure {
+    font-size: 16px;
+    color: #7a9a7a;
+    margin-top: 28px;
+    line-height: 1.7;
+  }
+
+  .marvin-sig {
+    margin-top: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .sig-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .sig-title {
+    font-size: 14px;
+    color: #7a9a7a;
+  }
+
+  @media (max-width: 480px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .phone-grid { grid-template-columns: 1fr; }
+    body { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <p class="hero-label">Quality Flow Control</p>
+    <h1>You missed the call.<br><em>You don't have to lose the job.</em></h1>
+    <p class="hero-sub">A simple system that texts your customer back the second you miss their call so they don't move on to someone else while you're busy doing the work.</p>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="section alt">
+  <div class="container">
+    <p class="section-label">A real experience</p>
+    <h2>A missed call that almost cost a local business a job they never knew they lost.</h2>
+
+    <div class="story-box">
+      <p>My AC unit was having issues. I did what most people do — pulled up Google and looked for the best-rated HVAC company in my area. Found one with strong reviews and called them.</p>
+
+      <p>No answer. The voicemail told me his mailbox was full and gave me a different number to call or text. I wasn't ready for that. I didn't have anything to write it down with. So I hung up.</p>
+
+      <p>My first thought was to just call someone else. So I took a minute, found something to write with, and called back.</p>
+
+      <p>He answered the second time. Turned out he was finishing up with another customer which is exactly why he hadn't picked up. We set an appointment, he came out, fixed the problem quickly and charged a fair price. I understood immediately why his reviews were so strong.</p>
+
+      <p>But I kept thinking about it. If I hadn't called back, that was a job he never knew he lost, to a customer who never complained, who just quietly called someone else. Think about what that job would have been worth to you. Then think about how many times a week that might be happening.</p>
+    </div>
+  </div>
+</section>
+
+<!-- THE NUMBERS -->
+<section class="section">
+  <div class="container">
+    <p class="section-label">The numbers</p>
+    <h2>This isn't just your business. It's the whole industry.</h2>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-number">62%</div>
+        <div class="stat-label">of calls to small service businesses go unanswered</div>
+        <div class="stat-source">411 Locals — study of 85 businesses across 58 industries</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">85%</div>
+        <div class="stat-label">of those callers never call back on their own</div>
+        <div class="stat-source">PATLive research</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">78%</div>
+        <div class="stat-label">of customers hire whoever responds first</div>
+        <div class="stat-source">InsideSales Lead Response Study</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">$126K</div>
+        <div class="stat-label">average revenue lost per year to missed calls</div>
+        <div class="stat-source">AMBS Call Center estimate</div>
+      </div>
+    </div>
+
+    <p>The calls you know about are bad enough. The ones you never see — the people who called once, got nothing, and moved on without a word — those are the ones that add up.</p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section alt">
+  <div class="container">
+    <p class="section-label">How it works</p>
+    <h2>Three things happen automatically. You do none of them.</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Someone calls your number and you miss it. You're on a job, under a crawlspace, with another customer. Doesn't matter why.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">They get a text back within seconds: "Hey, this is Quality Flow Control. Sorry we missed you — we'll call you right back." They stop looking for someone else.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">You get a text with their name, number, and the time they called. You call back when you're free. The job is still yours.</div>
+      </div>
+    </div>
+
+    <div class="fact-inline">
+      <strong>92% of missed callers stay</strong> if they get a text back within 60 seconds. When they hear from you right away they are far less likely to call someone else. <span style="color:#666; font-size:14px;">— CallRail Lead Response Study</span>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IT LOOKS LIKE -->
+<section class="section">
+  <div class="container">
+    <p class="section-label">What you will see</p>
+    <h2>Two texts. That's the whole system.</h2>
+
+    <div class="phone-grid">
+      <div class="phone-mock">
+        <div class="phone-label">Your customer gets</div>
+        <div class="sms-bubble">Hey, this is Quality Flow Control. Sorry we missed your call — we'll reach out shortly. Reply here if you need anything.</div>
+        <div class="sms-time">Delivered in seconds</div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-label">You get</div>
+        <div class="sms-bubble owner">New missed call<br><br>Mike R.<br>(423) 555-0182<br>Today at 2:14 PM</div>
+        <div class="sms-time">Instant alert</div>
+      </div>
+    </div>
+
+    <p>If you want to see all your missed calls in one place, there is a simple dashboard. You log in with a username and password — same as checking your bank app. It shows every missed call and whether your customer was contacted.</p>
+
+    <div class="dashboard-mock">
+      <div class="dash-header">Today's missed calls</div>
+      <div class="dash-row">
+        <div>
+          <div class="dash-name">Mike R.</div>
+          <div class="dash-detail">2:14 PM · (423) 555-0182</div>
+        </div>
+        <span class="badge badge-green">Texted back</span>
+      </div>
+      <div class="dash-row">
+        <div>
+          <div class="dash-name">Sandra T.</div>
+          <div class="dash-detail">11:42 AM · (704) 555-0091</div>
+        </div>
+        <span class="badge badge-green">Texted back</span>
+      </div>
+      <div class="dash-row">
+        <div>
+          <div class="dash-name">Unknown caller</div>
+          <div class="dash-detail">9:05 AM · (828) 555-0347</div>
+        </div>
+        <span class="badge badge-yellow">No name found</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTHING CHANGES -->
+<section class="section alt">
+  <div class="container">
+    <p class="section-label">Your business stays your business</p>
+    <h2>Nothing about how you work changes. Not one thing.</h2>
+
+    <div class="checklist">
+      <div class="check-item">
+        <div class="check-icon">✓</div>
+        Same phone number you have always had
+      </div>
+      <div class="check-item">
+        <div class="check-icon">✓</div>
+        No app to download or learn
+      </div>
+      <div class="check-item">
+        <div class="check-icon">✓</div>
+        No new software to figure out
+      </div>
+      <div class="check-item">
+        <div class="check-icon">✓</div>
+        Your customers still call the same number
+      </div>
+      <div class="check-item">
+        <div class="check-icon">✓</div>
+        Your crew, your process, your pricing — all unchanged
+      </div>
+    </div>
+
+    <p>The only difference is that when you miss a call, something happens instead of nothing. Your customer hears from you. The job is still there when you get a free moment.</p>
+  </div>
+</section>
+
+<!-- HOW WE WORK TOGETHER -->
+<section class="section">
+  <div class="container">
+    <p class="section-label">How we work together</p>
+    <h2>You run your business. I keep the system running.</h2>
+
+    <p>Before anything goes live we get on a call together. I learn how your business operates, what your customers expect, and what needs to be set up on my end to make this work the right way for you specifically. From there I handle the build and make sure everything is tested before it ever touches a real call.</p>
+
+    <div class="process-card">
+      <h3>What the process looks like</h3>
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="process-icon">1</div>
+          We talk — I get to know your business and what you need
+        </div>
+        <div class="process-step">
+          <div class="process-icon">2</div>
+          I build and configure the system on my end
+        </div>
+        <div class="process-step">
+          <div class="process-icon">3</div>
+          We test it together to make sure everything works the way it should
+        </div>
+        <div class="process-step">
+          <div class="process-icon">4</div>
+          It runs on its own from there — you just keep doing your work
+        </div>
+      </div>
+    </div>
+
+    <div class="support-box">
+      <strong>When something isn't working right, I fix it.</strong> I built this system and I know it inside out. If a text isn't going through or something looks off, you reach out and I take care of it. This isn't a product you buy and figure out on your own — it's a system I stand behind.
+    </div>
+  </div>
+</section>
+
+<!-- CLOSE -->
+<section class="close-section">
+  <div class="container">
+    <h2>If this makes sense for your business</h2>
+    <p class="reply-text">Reply to my message and we will set up a quick call. I will explain exactly how it works for your situation and answer any questions you have.</p>
+    <p class="no-pressure">If it is not for you, no worries at all — thanks for taking the time to read this.</p>
+
+    <div class="marvin-sig">
+      <div class="sig-name">— Marvin</div>
+      <div class="sig-title">Quality Flow Control</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
